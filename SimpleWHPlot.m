@@ -49,11 +49,11 @@ WsToPlot = zeros(N,K*(L+sep));
 XsToPlot = zeros(3,K); 
 YsToPlot = [N*ones(1,K); zeros(2,K)]+.5;
 for ki = 1:K
-    WsToPlot(:,((L+sep)*(ki-1)+1):((L+sep)*(ki-1)+L)) = squeeze(W(:,ki,:));
+    WsToPlot(:,((L+sep)*(ki-1)+1):((L+sep)*(ki-1)+L)) = sort_cells(squeeze(W(:,ki,:)));
     XsToPlot(:,ki) = [(L+sep)*(ki-1)+1 (L+sep)*(ki-1)+1 (L+sep)*(ki-1)+L];
 end
 clims = [0 prctile(WsToPlot(WsToPlot>0),99)]; % if all W's are empty this line will bug
-imagesc(WsToPlot, clims); 
+imagesc((WsToPlot), clims); 
 % cmap =
 % 1/256*flipud([158,1,66;213,62,79;244,109,67;253,174,97;254,224,139;255,255,191;230,245,152;171,221,164;102,194,165;50,136,189;94,79,162;1 1 1]); % colorbrewer
 cmap = flipud(gray); 
@@ -92,13 +92,14 @@ axis off
 axH = subplot('Position', [m+ww m+hdata wdata hh]);
 Hrescaled = repmat(squeeze(sum(sum(W,1),3))',1,T).*H; % rescale by approximate loading
 dn = prctile(Hrescaled(:),100)/2; 
-for ki = K:-1:1
-    Xs = [1 1:length(indplot) length(indplot)]; 
-    Ys = [dn*ki (dn*ki + Hrescaled(K-ki+1,indplot)) dn*ki]-dn/2;
-    patch(Xs,Ys, kColors(K-ki+1,:), 'edgecolor', kColors(K-ki+1,:))
-    hold on
-end
-ylim([0 dn*K+dn*3]);xlim([0 length(indplot)+1])
+imagesc(Hrescaled)
+% for ki = K:-1:1
+%     Xs = [1 1:length(indplot) length(indplot)]; 
+%     Ys = [dn*ki (dn*ki + Hrescaled(K-ki+1,indplot)) dn*ki]-dn/2;
+%     patch(Xs,Ys, kColors(K-ki+1,:), 'edgecolor', kColors(K-ki+1,:))
+%     hold on
+% end
+% ylim([0 dn*K+dn*3]);xlim([0 length(indplot)+1])
 axis off
 %%
 if plotAll

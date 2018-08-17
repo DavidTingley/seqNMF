@@ -49,7 +49,7 @@ function [W, H, cost,loadings,power] = seqNMF(X, varargin)
 % 'SortFactors'     1                                   Sort factors by loadings
 % 'lambdaOrthoH'    0                                   ||HSH^T||_1,i~=j; Encourages events-based factorizations
 % 'lambdaOrthoW'    0                                   ||Wflat^TWflat||_1,i~=j; ; Encourages parts-based factorizations
-% 'useWupdate'      1                                   Wupdate for cross orthogonality often doesn't change results much, and can be slow, so option to remove  
+% 'useWupdate'      1                                   Wupdatploe for cross orthogonality often doesn't change results much, and can be slow, so option to remove  
 % ------------------------------------------------------------------------
 % OUTPUTS:
 %
@@ -100,6 +100,7 @@ cost = zeros(params.maxiter+1, 1);
 cost(1) = sqrt(mean((X(:)-Xhat(:)).^2));
 
 for iter = 1 : params.maxiter
+    iter
     % Stopping criteria... Stop if reach maxiter or if change in cost function is less than the tolerance
     if (iter == params.maxiter) || ((iter>5) && (cost(iter+1)+params.tolerance)>mean(cost((iter-5):iter)))
         cost = cost(1 : iter+1);  % trim vector
